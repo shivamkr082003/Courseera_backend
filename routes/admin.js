@@ -17,12 +17,18 @@ const {JWT_ADMIN_PASSWORD} = require("../config")
 adminRouter.post("/signup", async function(req, res){      
 
     // Input validation using zod 
-    const requiredBody = z.object({
-        email: z.string().email().min(5), // Email must be a valid format and at least 5 characters
-        password: z.string().min(5), // Password must be at least 5 characters
-        firstName: z.string().min(3), // First name must be at least 3 characters
-        lastName: z.string().min(3), // Last name must be at least 3 characters
-    });
+  const requiredBody = z.object({
+    email: z.string().email().min(5), // Email must be valid
+    password: z.string()
+        .min(8, "Password must be at least 8 characters long")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number")
+        .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+    firstName: z.string().min(3), // First name must be at least 3 characters
+    lastName: z.string().min(3),  // Last name must be at least 3 characters
+});
+
 
     // Parse the request body using the requireBody.safeParse() method to validate the data format
     // "safe" parsing (doesn't throw error if validation fails)
@@ -68,8 +74,13 @@ adminRouter.post("/signin", async function(req, res){
 
     // Validate the request body data using zod schema(email,password must be valid)
     const requireBody = z.object({
-        email: z.string().email(),
-        password: z.string().min(6),
+        email: z.string().email().min(5), // Email must be valid
+    password: z.string()
+        .min(8, "Password must be at least 8 characters long")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number")
+        .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
     });
 
     // Parse and validate the request body data

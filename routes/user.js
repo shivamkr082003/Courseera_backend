@@ -24,12 +24,17 @@ const {JWT_USER_PASSWORD} = require("../config")
 userRouter.post("/signup", async function(req, res){      
 
     //input validation using zod 
-    const requiredBody = z.object({
-        email: z.string().min(3).max(100).email(),
-        password: z.string().min(3).max(100),
-        firstName: z.string().min(3).max(30),
-        lastName: z.string().min(3).max(30),
-    });
+   const requiredBody = z.object({
+    email: z.string().email().min(5), // Email must be valid
+    password: z.string()
+        .min(8, "Password must be at least 8 characters long")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number")
+        .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+    firstName: z.string().min(3), // First name must be at least 3 characters
+    lastName: z.string().min(3),  // Last name must be at least 3 characters
+});
 
     // Parse the request body using the requireBody.safeParse() method to validate the data format
     // "safe" parsing (doesn't throw error if validation fails)
@@ -76,12 +81,13 @@ userRouter.post("/signin",async function(req, res){
 
     // Define the schema for validating the request body data using zod
     const requireBody = z.object({
-
-        // Email must be a valid email format
-        email: z.string().email(),
-
-        // Password must be at least 6 character
-        password: z.string().min(6)
+        email: z.string().email().min(5), // Email must be valid
+        password: z.string()
+        .min(8, "Password must be at least 8 characters long")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number")
+        .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
     });
     // Parse adnd validate the incomng request body data
     const parsedDataWithSuccess = requireBody.safeParse(req.body);
