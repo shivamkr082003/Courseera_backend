@@ -175,7 +175,7 @@ adminRouter.post("/course", adminMiddleware, async function(req,res) {
 
 adminRouter.put("/course", adminMiddleware, async function(req,res) {
     // Get the adminId from the request object, set by the admin middleware
-    const adminId = req.userId;
+    const adminId = req.adminId;
 
     // Define a schema using zod to validate the request body for updating a course
     const requireBody = z.object({
