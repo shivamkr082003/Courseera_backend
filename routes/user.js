@@ -14,9 +14,12 @@ const userRouter = Router();
 
 // Import the required dependencies 
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const z = require("zod");
 const { userModel } = require("../db");
+const { purchaseModel } = require("../db");
+const { courseModel } = require("../db");
+const {userMiddleware} = require("../middleware/user")
 
 const {JWT_USER_PASSWORD} = require("../config")
 
