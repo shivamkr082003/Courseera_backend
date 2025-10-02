@@ -8,6 +8,7 @@ const adminRouter = Router();
 const {adminModel} = require("../db");
 
 const{adminMiddleware} = require ("../middleware/admin")
+const {courseModel} = require("../db");
 // Import the required dependencies 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
